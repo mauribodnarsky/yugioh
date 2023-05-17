@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http:///127.0.0.1:8000/api/';
+  private baseUrl = 'https://mauriciobodnarsky.com.ar/yugioh/api/public/api/';
   private token: string | null = null;
+  private isLoggedIn = false;
 
   constructor(private http: HttpClient) { 
     this.token = localStorage.getItem('token');
@@ -84,11 +87,19 @@ export class ApiService {
   }
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
     this.token = null;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}` // agregar el token en el encabezado Authorization
+      })
+    };
+    this.http.post<any>(`${this.baseUrl}logout`, httpOptions);
   }
 
   getToken(): Observable<boolean> {
-    if (!this.token) {
+    if (!this.token ) {
       this.token = localStorage.getItem('token');
     }
   
@@ -102,9 +113,20 @@ export class ApiService {
     return this.http.get<any>(`${this.baseUrl}user`, httpOptions)
       .pipe(
         map(response => true),
-        tap(result => {
+        catchError(error => {
+          if (error.status === 401) {
+            return of(false); // Token inválido
+          }
+          throw error;
         })
       );
+  }
+  public getIsLoggedIn(): boolean {
+    return this.isLoggedIn;
+  }
+
+  public setIsLoggedIn(value: boolean): void {
+    this.isLoggedIn = value;
   }
   }
 

@@ -16,9 +16,9 @@
                 </a>
               </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="fas fa-ticket-alt"></i>
-                Categorias
+              <a class="nav-link" (click)="logout()" href="#">
+                  <i class="fa fa-power-off" aria-hidden="true"></i>Cerrar Sesión
+                  
               </a>
             </li>
           </ul>
@@ -131,7 +131,7 @@
                       <tr *ngFor="let element of cartas.slice((currentPage - 1) * pageSize, currentPage * pageSize)">
                         <td>{{ element.name }}</td>
                         <td>{{ element.type_card.name }} | {{element.subtype_card.name }}</td>
-                        <td><img class="w-25" src="http:///127.0.0.1:8000/{{ element.image }}" alt="Sin imagen"></td>
+                        <td><img class="w-25" src="https://mauriciobodnarsky.com.ar/yugioh/api/public/{{ element.image }}" alt="Sin imagen"></td>
                         <td>{{ element.atk }}</td>
                         <td>{{ element.def }}</td>
                         <td>
@@ -246,7 +246,7 @@
               </div>
               <div class="form-group" >
                 <label for="image">Imagen Actual</label> 
-                <img class="w-50 d-block" src="http:///127.0.0.1:8000/{{ CardEdit.image }}" alt="">
+                <img class="w-50 d-block" src="https://mauriciobodnarsky.com.ar/yugioh/api/public/{{ CardEdit.image }}" alt="">
 
             </div>
               <div class="form-group">
@@ -309,7 +309,7 @@
               </div>
               <div class="d-block"  >
                 <h3 >Imagen Actual : </h3> 
-                <img class="w-50 d-block" src="http:///127.0.0.1:8000/{{ CardView.image }}" alt="">
+                <img class="w-50 d-block" src="https://mauriciobodnarsky.com.ar/yugioh/api/public/{{ CardView.image }}" alt="">
 
             </div>
               <div class="d-block" >

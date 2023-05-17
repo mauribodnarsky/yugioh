@@ -1,7 +1,11 @@
-<div *ngIf="this.loggedIn; else login">
+<div class="container-fluid body h-100" >
+  
+<div *ngIf="loggedIn===true">
   <app-home></app-home>
 </div>
-
-<ng-template #login>
+<div *ngIf="loggedIn===false">
   <app-login></app-login>
-</ng-template>
+</div>
+
+
+</div>

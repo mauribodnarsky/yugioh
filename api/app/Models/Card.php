@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SubtypeCard;
+use App\Models\TypeCard;
 
 use Illuminate\Support\Facades\Validator;
 class Card extends Model
 {
     use HasFactory;
     protected $table='cards';
-    protected $with = ['typeCard','subtypeCard'];
+    protected $with = ['typeCard','SubTypeCard'];
 
     protected $fillable = [
         'name',
@@ -63,8 +65,8 @@ class Card extends Model
         return $this->belongsTo(TypeCard::class,'id_type_card');
     }
     
-    public function subtypeCard()
+    public function SubTypeCard()
     {
-        return $this->belongsTo(SubtypeCard::class,'id_subtype_card');
+        return $this->belongsTo(SubTypeCard::class,'id_subtype_card');
     }
 }

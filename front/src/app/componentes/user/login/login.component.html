@@ -1,15 +1,31 @@
-<form [formGroup]="loginForm"  (ngSubmit)="onSubmit()">
-    <label>
-      Nombre de usuario:
-      <input type="text" formControlName="username">
-    </label>
-   
-    <label>
-      Contraseña:
-      <input type="password" formControlName="password">
-    </label>
-   
-    <button type="submit">Ingresar</button>
-  </form>
+<div class="row mt-50">
+  <div class="col-12 col-md-8 offset-md-2">
+<form class="form-group row" [formGroup]="loginForm"  (ngSubmit)="onSubmit()">
+  <div class="col-12 text-center">
+    <img src="https://mauriciobodnarsky.com.ar/yugioh/front/assets/Yugi_muto.png" class="w-50" alt="">
+  </div>
+  
+  <div class="col-12 mt-4 text-center">
+    <h1 class="text-white ">Bienvenido!</h1>
 
+    <label class="form-label  h5 text-white">
+      Nombre de usuario
+    </label>
+
+      <input type="text" class="form-control mx-auto w-50" formControlName="username">
+  </div>
+  <div class="col-12 mt-4 text-center"> 
+    <label class="form-label h5 text-white">
+      Contraseña:
+    </label> 
+
+      <input type="password" class="form-control mx-auto w-50" formControlName="password">
+  </div>
+   
+  <div class="col-12 mt-3 text-center"> 
+    <button type="submit" class="w-50 btn btn-success">Ingresar</button>
+  </div>
+  </form>
+</div>
+</div>
   

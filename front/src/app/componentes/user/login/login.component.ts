@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ApiService } from 'src/app/api.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { AppComponent } from 'src/app/app.component';
-import { HomeComponent } from '../home/home.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,10 +13,11 @@ export class LoginComponent {
   }
   
   );
-
-  constructor(private ApiService:ApiService,private appComponent: AppComponent,private homeComponent: HomeComponent){
-  }
   
+  constructor(private ApiService:ApiService){
+  }
+  ngOnInit(){
+  }
   
   onSubmit() {
     const username = this.loginForm.get('username')?.value;
@@ -27,13 +26,11 @@ export class LoginComponent {
       data => {
         localStorage.setItem("token",data.token)
         localStorage.setItem("user",data.user)
-        this.appComponent.loggedIn = true; // setear la propiedad isLoggedIn a true en AppComponent
-      
+        this.ApiService.setIsLoggedIn(true)      
         this.ApiService.getAllCards().subscribe(
           data => {
             
             
-              this.homeComponent.cartas= data.response
           },
           error => {
             console.log(error);
@@ -41,7 +38,8 @@ export class LoginComponent {
         );
       },
       error => {
-        console.log(error);
+        this.ApiService.setIsLoggedIn(true)      
+      
       }
     );
   }

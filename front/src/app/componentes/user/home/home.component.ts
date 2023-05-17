@@ -1,7 +1,7 @@
 import { Component, OnInit  } from '@angular/core';
 import { ApiService } from 'src/app/api.service';
 import {AfterViewInit, ViewChild} from '@angular/core';
-
+import { AppComponent } from 'src/app/app.component';
 export interface Carta {
   id:number,
   atk:string,
@@ -210,7 +210,6 @@ this.CardEdit=Card
         }
         
   deleteModal(Card:any){
-console.log(Card)
     this.CardDelete=Card    
         }
 
@@ -373,5 +372,10 @@ this.CardView = {
         (subtype) => subtype.id_type_card == id
       );
   }
+  logout(){
+    this.ApiService.setIsLoggedIn(false)      
+
+    this.ApiService.logout()
+}
 }
 
