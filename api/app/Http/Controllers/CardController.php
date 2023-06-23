@@ -16,11 +16,15 @@ class CardController extends Controller
      */
     public function index()
     {
+        try{
+
         $result=Model::all();
         $subtypes=SubTypeCard::all();
         $types=TypeCard::all();
         return view('cards',['result'=>json_decode($result),'types_cards'=>$types,'subtypes_cards'=>$subtypes]);
-  
+    } catch(Exception $e) {
+        return view('cards',['error'=>$e->getmessage()]);
+    }
     }
 
     /**
