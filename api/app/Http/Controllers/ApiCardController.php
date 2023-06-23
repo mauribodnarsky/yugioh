@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Hamcrest\Type\IsInteger;
 
-class CardController extends Controller
+class ApiCardController extends Controller
 {
     /**
      * Display a listing of the resource.
