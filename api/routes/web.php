@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\TypeCardController;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 //RUTAS DE CARTAS
-Route::prefix('public/cards')->middleware('auth:sanctum')->group(function(){
+Route::prefix('cards')->middleware('auth:sanctum')->group(function(){
     Route::get('/', [CardController::class, 'index']);
     Route::post('search', [CardController::class, 'search']);
 

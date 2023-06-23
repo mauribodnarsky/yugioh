@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CardController;
+use App\Http\Controllers\ApiCardController;
 use App\Http\Controllers\TypeCardController;
 
 /*
@@ -26,12 +26,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 //RUTAS DE CARTAS
 Route::prefix('cards')->middleware('auth:sanctum')->group(function(){
-    Route::get('/', [CardController::class, 'index']);
-    Route::post('search', [CardController::class, 'search']);
+    Route::get('/', [ApiCardController::class, 'index']);
+    Route::post('search', [ApiCardController::class, 'search']);
 
-    Route::post('/', [CardController::class, 'create']);
-    Route::post('/update', [CardController::class, 'update']);
-    Route::delete('/delete/{id}',[CardController::class,'destroy']);
+    Route::post('/', [ApiCardController::class, 'create']);
+    Route::post('/update', [ApiCardController::class, 'update']);
+    Route::delete('/delete/{id}',[ApiCardController::class,'destroy']);
     
     });
 
