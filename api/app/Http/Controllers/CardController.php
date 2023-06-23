@@ -70,7 +70,7 @@ class CardController extends Controller
             }
     
         } catch(Exception $e) {
-            return view('cardcreate',['error'=>$e->getmessage()]);
+            return response()->json(['error'=>$e->getmessage()],400);
         }
     
     }
