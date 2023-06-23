@@ -51,16 +51,16 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return view('welcome',['message' => 'Invalid credentials']);
         }
 
         $user = User::where('email', $request->email)->first();
         $token = $user->createToken('authToken')->plainTextToken;
 
-        return response()->json([
+        return view('welcome',[
             'user' => $user,
             'token' => $token,
-        ], 200);
+        ]);
     }
 
     /**

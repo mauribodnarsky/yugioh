@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Card as Model;
 use Illuminate\Http\Request;
 use Exception;
-use Hamcrest\Type\IsInteger;
-
+use App\Models\SubTypeCard;
+use App\Models\TypeCard;
 class CardController extends Controller
 {
     /**
@@ -17,7 +17,9 @@ class CardController extends Controller
     public function index()
     {
         $result=Model::all();
-        return response()->json(['response'=>$result],200);
+        $subtypes=SubTypeCard::all();
+        $types=TypeCard::all();
+        return view('cards',['result'=>json_decode($result),'types_cards'=>$types,'subtypes_cards'=>$subtypes]);
   
     }
 
@@ -57,14 +59,16 @@ class CardController extends Controller
                     $id=$result->id;
                     $result = $model->where('id', $result->id)->update(['image' => $imagePath]);
                     $result = $model->where('id', $id)->first();
+                    return view('cardcreate',['result'=>$result]);
+
                 }
+                
             }
     
         } catch(Exception $e) {
-            return response()->json(['error'=>$e->getmessage()],400);
+            return view('cardcreate',['error'=>$e->getmessage()]);
         }
     
-        return response()->json(['response'=>$result],200);
     }
     
 
@@ -83,10 +87,13 @@ class CardController extends Controller
         try{
             $dataCard = $request->all();
             $model = new Model();
+            unset($dataCard['_token']);
+
             $datacreate = $dataCard;
             unset($datacreate['image']);
             $result = $model->where('id', $request->input('id'))->update($datacreate);
-
+            $registroupdate=$result;
+            
 
             if($request->file('image')) {
                 $logo = $request->file('image');
@@ -98,7 +105,7 @@ class CardController extends Controller
             if(is_numeric($request->input('id'))) {
                 // Creamos una carpeta para la imagen si no existe
                 if($request->file('image')) {
-                    $carpetalogo = public_path('img/cartas/' . $request->input('id').'/');
+                    $carpetalogo = public_path('/img/cartas/' . $request->input('id').'/');
                     if (!file_exists($carpetalogo)) {
                         mkdir($carpetalogo, 0777, true);
                     }
@@ -107,37 +114,44 @@ class CardController extends Controller
                     $nombreImage = $logo->getClientOriginalName();
                     // Guardamos la imagen en la carpeta correspondiente
                     $logo->move($carpetalogo, $nombreImage);
-                    $imagePath = "img/cartas/". $request->input('id')."/".$logo->getClientOriginalName();
+                    $imagePath = "/img/cartas/". $request->input('id')."/".$logo->getClientOriginalName();
                     $id=$request->input('id');
                     $result = $model->where('id', $request->input('id'))->update(['image' => $imagePath]);
+                    $registroupdate=$result;
                     $result = $model->where('id', $id)->first();
                 }
+                
             }
     
         } catch(Exception $e) {
             return response()->json(['error'=>$e->getmessage()],400);
         }
     
-        return response()->json(['response'=>$result],200);
-    }
+        $result=Model::all();
+        $subtypes=SubTypeCard::all();
+        $types=TypeCard::all();
+        return view('cards',['result'=>json_decode($result),'types_cards'=>$types,'subtypes_cards'=>$subtypes,'registroupdate'=>$registroupdate]);
+      }
     
-    public function destroy( $id)
+    public function destroy( Request $request)
     {
         try{
-
-            $registro = Model::find($id);
-            if ($registro) {
-                $registro->delete();
-                $registro=true;
+            $registroborrado = Model::find($request->input('id_deleted'));
+            if ($registroborrado) {
+                $registroborrado->delete();
+                $registroborrado=true;
             }else{
-                $registro="no existe la carta.";
+                $registroborrado=false;
             }
 
         }catch(Exception $e){
-            return response()->json(['error'=>$e->getmessage()],400);
+            return view('cards',['error'=>$e->getmessage()]);
         }
-        return response()->json(['response'=>$registro],200);
-
+        $result=Model::all();
+        $subtypes=SubTypeCard::all();
+        $types=TypeCard::all();
+        return view('cards',['result'=>json_decode($result),'types_cards'=>$types,'subtypes_cards'=>$subtypes,'registroborrado'=>$registroborrado]);
+  
     }
     public function search(Request $request)
     {
